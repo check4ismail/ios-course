@@ -28,6 +28,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func numberPressed(_ sender: UIButton) {
+    // Display digits that are pressed
 		if operationSelected {
 			operationSelected = false
 			
@@ -42,13 +43,13 @@ class ViewController: UIViewController {
 	
 	
 	@IBAction func numOperationSelected(_ sender: UIButton) {
-		if numberHolder == "" {
+		// Prevents action if operation pressed first
+        if numberHolder == "" {
 			return
 		}
 		
 		operationSelected = true
-		number.append(Double(numberHolder)!)
-		numberHolder = ""
+		appendDigits()
 		
 		let operation = sender.tag
 		if operation == 0 {
@@ -69,19 +70,61 @@ class ViewController: UIViewController {
 		}
 	}
 	
-	
-	@IBAction func executeOperations(_ sender: UIButton) {
-		for i in 0..<operationsStored.count(by:2) {
-			
-		}
-	}
-	
-	func numToString(_ number : Int) {
-		
-	}
-	
-	func numToString(_ number : Double) {
-		
-	}
+    func appendDigits() {
+        number.append(Double(numberHolder)!)
+        numberHolder = ""
+    }
+    
+    @IBAction func executeOperations(_ sender: UIButton) {
+        appendDigits()
+        var index : Int = 0
+        var calculatedNumber : Double = 0
+        print("All numbers: \(number)")
+        for i in 1...number.count-1 {
+            if i == 1 {
+                print("\(number[i-1]) \(operationsStored[index]) \(number[i])")
+                calculatedNumber = executeCorrectOperation(operationsStored[index], number[i - 1], number[i])
+            }
+            else {
+                print("\(calculatedNumber) \(operationsStored[index]) \(number[i])")
+                calculatedNumber = executeCorrectOperation(operationsStored[index], calculatedNumber, number[i])
+            }
+            index += 1
+            print("Calculated digits so far: \(calculatedNumber)")
+        }
+        
+        numberText.text = String(calculatedNumber)
+        
+        resetValues()
+    }
+    
+    func executeCorrectOperation(_ operationType : String, _ digitOne : Double, _ digitTwo : Double) -> Double {
+        var calculatedNumber : Double = 0
+        if operationType == "add" {
+            calculatedNumber = digitOne + digitTwo
+        }
+        else if operationType == "sub" {
+            calculatedNumber = digitOne - digitTwo
+        }
+        else if operationType == "mul" {
+            calculatedNumber = digitOne * digitTwo
+        }
+        else if operationType == "div" {
+            calculatedNumber = digitOne / digitTwo
+        }
+        
+        return calculatedNumber
+    }
+    
+    func resetValues() {
+        operationsStored.removeAll()
+        number.removeAll()
+    }
+    
+    
+    @IBAction func clearAction(_ sender: UIButton) {
+        resetValues()
+        numberText.text = "0"
+    }
 }
 
