@@ -6,6 +6,13 @@
 //  Copyright © 2019 Ismail Elmaliki. All rights reserved.
 //
 
+/*
+    TO DO:
+    1. Take methodical approach via OOP
+    2. Clean code
+    3. Handle errors correctly while avoiding redundancy
+*/
+
 import UIKit
 
 class ViewController: UIViewController {
@@ -24,7 +31,7 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view.
-		numberText.text = "0"
+        resetValues()
 	}
 
 	@IBAction func numberPressed(_ sender: UIButton) {
@@ -71,8 +78,28 @@ class ViewController: UIViewController {
 	}
 	
     func appendDigits() {
+        // Experimenting with regular expression to ensure correct quantity of digits entered
+        print(matches(for: "^(.){0,11}$", in: numberHolder))
+        if numberHolder == "" {
+            
+        }
         number.append(Double(numberHolder)!)
         numberHolder = ""
+    }
+    
+    func matches(for regex: String, in text: String) -> [String] {
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            let results = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
+            let finalResult = results.map {
+                String(text[Range($0.range, in: text)!])
+            }
+            return finalResult
+        }
+        catch let error {
+            print("Invalid regex: \(error.localizedDescription)")
+            return []
+        }
     }
     
     @IBAction func executeOperations(_ sender: UIButton) {
@@ -80,20 +107,30 @@ class ViewController: UIViewController {
         var index : Int = 0
         var calculatedNumber : Double = 0
         print("All numbers: \(number)")
-        for i in 1...number.count-1 {
-            if i == 1 {
-                print("\(number[i-1]) \(operationsStored[index]) \(number[i])")
-                calculatedNumber = executeCorrectOperation(operationsStored[index], number[i - 1], number[i])
-            }
-            else {
-                print("\(calculatedNumber) \(operationsStored[index]) \(number[i])")
-                calculatedNumber = executeCorrectOperation(operationsStored[index], calculatedNumber, number[i])
-            }
-            index += 1
-            print("Calculated digits so far: \(calculatedNumber)")
+        // Equal sign touched with no numbers
+        if number.count == 0 {
+            resetValues()
         }
-        
-        numberText.text = String(calculatedNumber)
+        // Equal sign touched with one digit selected
+        else if number.count == 1 {
+            numberText.text = String(number[0])
+        }
+        else {
+            for i in 1...number.count-1 {
+                if i == 1 {
+                    print("\(number[i-1]) \(operationsStored[index]) \(number[i])")
+                    calculatedNumber = executeCorrectOperation(operationsStored[index], number[i - 1], number[i])
+                }
+                else {
+                    print("\(calculatedNumber) \(operationsStored[index]) \(number[i])")
+                    calculatedNumber = executeCorrectOperation(operationsStored[index], calculatedNumber, number[i])
+                }
+                index += 1
+                print("Calculated digits so far: \(calculatedNumber)")
+            }
+            
+            numberText.text = String(calculatedNumber)
+        }
         
         resetValues()
     }
@@ -119,12 +156,12 @@ class ViewController: UIViewController {
     func resetValues() {
         operationsStored.removeAll()
         number.removeAll()
+        numberHolder = ""
+        numberText.text = "0"
     }
-    
     
     @IBAction func clearAction(_ sender: UIButton) {
         resetValues()
-        numberText.text = "0"
     }
 }
 
