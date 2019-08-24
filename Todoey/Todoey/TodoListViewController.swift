@@ -11,13 +11,13 @@ import UIKit
 // Subclassing UITableViewController includes all the components we need
 class TodoListViewController: UITableViewController {
 
-	let itemArray = ["Find Mike", "Buy Eggos", "Destroy Demogorgon"]
+	var itemArray = ["Find Mike", "Buy Eggos", "Destroy Demogorgon"]
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view.
+		
 	}
 	
-	//MARK - Tableview Datasource Methods
+	//MARK: - Tableview Datasource Methods
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return itemArray.count
 	}
@@ -32,7 +32,7 @@ class TodoListViewController: UITableViewController {
 		return cell
 	}
 	
-	//MARK - TableView Delegate Methods
+	//MARK: - TableView Delegate Methods
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		// indexPath.row -> the current row being selected
 		
@@ -48,5 +48,33 @@ class TodoListViewController: UITableViewController {
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
+	//MARK: - Add new items
+	@IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+		/*
+			Was able to change the Bar Button to a "+" symbol by going to the
+			Attribute inspector then changing System item to "Add"
+		*/
+		
+		var textField = UITextField()
+		// Alert box content
+		let alert = UIAlertController(title: "Add New Todoey Item", message: "ff", preferredStyle: .alert)
+		alert.addTextField { (alertTextField) in
+			alertTextField.placeholder = "Create new item"
+			textField = alertTextField
+		}
+		
+		// Action 1
+		let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+			// What will happen once user clicks Add Item button on Alert
+			self.itemArray.append(textField.text!)
+			
+			// Reloads tableView to ensure recently appended data appears in TableView
+			self.tableView.reloadData()
+		}
+		
+		
+		alert.addAction(action)
+		present(alert, animated: true, completion: nil)
+	}
 }
 
