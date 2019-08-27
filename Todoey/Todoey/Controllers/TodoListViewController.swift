@@ -45,6 +45,9 @@ class TodoListViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		// indexPath.row -> the current row being selected
 		
+//		context.delete(itemArray[indexPath.row])
+//		itemArray.remove(at: indexPath.row)
+		
 		// Sets current value to its opposite
 		// If true, then make it false. If false, then make it true
 		itemArray[indexPath.row].done = !itemArray[indexPath.row].done
@@ -102,13 +105,41 @@ class TodoListViewController: UITableViewController {
 	}
 	
 	//MARK: load data method from Core Data
-	func loadItems() {
-		let request: NSFetchRequest<Item> = Item.fetchRequest()
+	func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+		// ^ uses default value
 		do {
 			itemArray = try context.fetch(request)
 		} catch {
 			print("Error fetching data from context \(error)")
 		}
+		
+		tableView.reloadData()
 	}
 }
 
+// MARK: Search bar methods
+extension TodoListViewController: UISearchBarDelegate {
+	
+	// MARK: Querying core data
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		let request: NSFetchRequest<Item> = Item.fetchRequest()
+		
+		request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+		
+		request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+		
+		loadItems(with: request)
+	}
+	
+	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+		if searchBar.text?.count == 0 {
+			loadItems()
+
+			// Changing UI in an asyncronous to prevent disruption to user
+			DispatchQueue.main.async {
+				// Return search bar to non-activated state
+				searchBar.resignFirstResponder()
+			}
+		}
+	}
+}
