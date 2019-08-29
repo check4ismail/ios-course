@@ -16,25 +16,26 @@ class CategoryViewController: UITableViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		loadItems()
+		loadCategories()
     }
 
 	//MARK: - Add New Categories
 	@IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
 		var textField = UITextField()
 		// Alert box content
-		let alert = UIAlertController(title: "Add New Todoey Category", message: "", preferredStyle: .alert)
+		let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
 		alert.addTextField { (alertTextField) in
-			alertTextField.placeholder = "Create new category"
+			alertTextField.placeholder = "Add New Category"
 			textField = alertTextField
 		}
 		
 		// Action 1
-		let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
+		let action = UIAlertAction(title: "Add", style: .default) { (action) in
 			
 			// What will happen once user clicks Add Item button on Alert
 			let newCategory = Category(context: self.context)
 			newCategory.name = textField.text!
+			
 			self.categoryArray.append(newCategory)
 			
 			self.saveCategories()
@@ -47,8 +48,15 @@ class CategoryViewController: UITableViewController {
 	//MARK: - TableView Datasource Methods
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
-		// Quickly taps cell - prevents gray color from sticking to cell
-		tableView.deselectRow(at: indexPath, animated: true)
+		performSegue(withIdentifier: "goToItems", sender: self)
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		let destinationVC = segue.destination as! TodoListViewController
+		
+		if let indexPath = tableView.indexPathForSelectedRow {
+			destinationVC.selectedCategory = categoryArray[indexPath.row]
+		}
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -76,7 +84,7 @@ class CategoryViewController: UITableViewController {
 		self.tableView.reloadData()
 	}
 	
-	func loadItems(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+	func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
 		// ^ uses default value
 		do {
 			categoryArray = try context.fetch(request)
