@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 
 // Subclassing UITableViewController includes all the components we need
-class TodoListViewController: UITableViewController {
+class TodoListViewController: SwipeTableViewController {
 
 	var todoItems : Results<Item>?
 	let realm = try! Realm()
@@ -26,6 +26,7 @@ class TodoListViewController: UITableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tableView.rowHeight = 80.0
 		print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
 	}
 	
@@ -36,8 +37,8 @@ class TodoListViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Allows me to create a cell into TableView identifier
-		let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
-		
+		let cell = super.tableView(tableView, cellForRowAt: indexPath)
+
 		// Actually populating the cell with the array contents for each row
 		if let item = todoItems?[indexPath.row] {
 			// Using ternary operator
@@ -108,6 +109,19 @@ class TodoListViewController: UITableViewController {
 		
 		alert.addAction(action)
 		present(alert, animated: true, completion: nil)
+	}
+	
+	override func updateModel(at indexPath: IndexPath) {
+		if let itemForDeletion = self.todoItems?[indexPath.row] {
+			do {
+				try self.realm.write {
+					self.realm.delete(itemForDeletion)
+				}
+			} catch {
+				print("Error removing category from realm: \(error)")
+			}
+			tableView.reloadData()
+		}
 	}
 	
 	//MARK: load data method from Core Data
