@@ -2,8 +2,7 @@
 //  ViewController.swift
 //  Calculator
 //
-//  Created by Angela Yu on 10/09/2018.
-//  Copyright © 2018 London App Brewery. All rights reserved.
+//  Created by Ismail Elmaliki
 //
 
 import UIKit
@@ -11,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
-    private var isFinishedTyping: Bool = true
+	private var isFinishedTyping: Bool = true
 	private var displayValue: Double {
 		get {
 			// Gets current value from displaylabel
@@ -23,23 +22,25 @@ class ViewController: UIViewController {
 			displayLabel.text = String(newValue)
 		}
 	}
-    
+	private var calculator = CalculatorLogic()
+	
+	// MARK: Action when a non-number button is pressed
     @IBAction func calcButtonPressed(_ sender: UIButton) {
-        
-        //What should happen when a non-number button is pressed
+	
 		isFinishedTyping = true
 		
+		calculator.setNumber(displayValue)
 		if let calcMethod = sender.currentTitle {
-			let calculator = CalculatorLogic(number: displayValue)
-			guard let result = calculator.calculate(symbol: calcMethod) else { fatalError("Results of calculation is nill") }
-			displayValue = result
+			if let result = calculator.calculate(symbol: calcMethod) {
+				displayValue = result
+			}
 		}
     }
 
-    
+	
+	// MARK: Action when number is entered into keypad
     @IBAction func numButtonPressed(_ sender: UIButton) {
-        
-        //What should happen when a number is entered into the keypad
+	
 		if let numValue = sender.currentTitle {
 			
 			if isFinishedTyping {
