@@ -8,5 +8,13 @@
 
 import Foundation
 
-print("Hello, World!")
+//print("Hello, World!")
 
+var hero = StructHero(name: "Iron Man", universe: "Marvel")
+
+// New reference to the same object
+var anotherHero = hero
+anotherHero.name = "The Hulk"
+
+print("hero name = \(hero.name)")
+print("anotherMarvelhero name = \(anotherHero.name)")
