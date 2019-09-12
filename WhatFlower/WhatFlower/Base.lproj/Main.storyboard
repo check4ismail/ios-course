@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ayO-WV-ydS">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="ilM-tb-xC7">
+            <objects>
+                <navigationController id="ayO-WV-ydS" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="O5G-sO-qM8">
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="bHN-wg-KZj"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2sX-CI-upH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1479" y="-90"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="WhatFlower" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QkQ-Vl-nQi">
+                                <rect key="frame" x="0.0" y="64" width="414" height="387"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="QkQ-Vl-nQi" secondAttribute="height" multiplier="46:43" id="nKw-ax-Fi3"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="1" translatesAutoresizingMaskIntoConstraints="NO" id="S2U-dw-TWe">
+                                <rect key="frame" x="20" y="475" width="374" height="241"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="S2U-dw-TWe" secondAttribute="trailing" constant="20" id="5xH-fD-DTQ"/>
+                            <constraint firstItem="QkQ-Vl-nQi" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="7nk-Mf-lNl"/>
+                            <constraint firstItem="QkQ-Vl-nQi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="HUy-Vb-gAp"/>
+                            <constraint firstItem="QkQ-Vl-nQi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Xyd-7t-Ojd"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="S2U-dw-TWe" secondAttribute="bottom" constant="20" id="gBC-3S-c3c"/>
+                            <constraint firstItem="S2U-dw-TWe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ooz-Jh-zgT"/>
+                            <constraint firstItem="S2U-dw-TWe" firstAttribute="top" secondItem="QkQ-Vl-nQi" secondAttribute="bottom" constant="24" id="udr-tv-d28"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="JZz-n7-dd2">
+                        <barButtonItem key="rightBarButtonItem" systemItem="camera" id="PDE-uX-6T4">
+                            <connections>
+                                <action selector="cameraPressed:" destination="BYZ-38-t0r" id="31R-97-Cks"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageView" destination="QkQ-Vl-nQi" id="JSS-RI-vrT"/>
+                        <outlet property="textLabel" destination="S2U-dw-TWe" id="2i6-OS-IT0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-642.02898550724638" y="-90.489130434782609"/>
+        </scene>
+    </scenes>
+</document>
